@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with Our WhatsApp AI Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .whatsapp-icon {
+      width: 100px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .whatsapp-icon:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Chat with Our WhatsApp AI Bot</h1>
+    <p>Click the icon below to join our WhatsApp chat.</p>
+    <!-- Replace YOUR_JOIN_CODE with the actual join code from your Twilio sandbox -->
+    <a href="https://wa.me/14155238886?text=join%20YOUR_JOIN_CODE" target="_blank">
+      <img class="whatsapp-icon" src="whatsapp-icon.png" alt="Chat on WhatsApp">
+    </a>
+    <!-- Optional: Add a button to send a template message (if desired) -->
+    <br><br>
+    <button onclick="sendVerification()">Send Verification Message</button>
+  </div>
+  
+  <script>
+    function sendVerification() {
+      const recipient = "whatsapp:+91";  // Replace with the recipient's number
+      fetch("http://127.0.0.1:5000/send_verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: recipient })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert("Verification message sent! Message SID: " + data.message_sid);
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch(error => {
+        console.error("Error sending verification message:", error);
+        alert("Error: " + error.message);
+      });
+    }
+  </script>
+</body>
+</html>
